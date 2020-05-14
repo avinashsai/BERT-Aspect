@@ -40,8 +40,8 @@ For Restaurant dataset:
 
 | Model | This Implementation Result (Acc) | Paper Result (Acc) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 84 | 82.21 |
+| BERT Base Uncased + LSTM | 83.6 | 82.21 |
 
 | Model | This Implementation Result (F1) | Paper Result (F1) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 76 | 73.22 |
+| BERT Base Uncased + LSTM | 74.5 | 73.22 |
