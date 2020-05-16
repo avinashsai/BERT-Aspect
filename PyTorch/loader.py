@@ -10,7 +10,7 @@ def load_data(dataset, num_classes, data_path=None):
              'conflict': 3}
 
     if(data_path is None):
-        data_path = '../../Data/'
+        data_path = '../Data/'
     train_file = data_path + 'atsa-' + dataset + '/atsa_train.json'
     test_file = data_path + 'atsa-' + dataset + '/atsa_test.json'
 
