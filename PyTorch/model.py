@@ -19,7 +19,7 @@ class Bert_Base(nn.Module):
 
         self.bert = BertForSequenceClassification.from_pretrained('bert-base-uncased', # noqa
                                                                    output_hidden_states=False, # noqa
-                                                                   output_attentions=False,
+                                                                   output_attentions=False, # noqa
                                                                    num_labels=self.numclasses) # noqa
         print("BERT Model Loaded")
 

@@ -12,7 +12,7 @@ def evaluate(loader, net, device, model_name):
     loader (DataLoader): dataloader to evaluate
     net (nn.Module): Model to evaluate
     device (torch.device): Device type
-    model_name (str): Model name 
+    model_name (str): Model name
 
     """
     net.eval()
@@ -28,7 +28,7 @@ def evaluate(loader, net, device, model_name):
             attention_masks = attention_masks.to(device)
             token_ids = token_ids.to(device)
             labels = labels.long().to(device)
-            
+
             if(model_name == 'base'):
                 curloss, output = net(input_id, attention_masks, token_ids, labels)# noqa
             else:
@@ -86,7 +86,7 @@ def train_model(train_loader, dev_loader, test_loader, model_name,
                 labels = labels.long().to(device)
 
                 model.zero_grad()
-                
+
                 if(model_name == 'base'):
                     loss, _ = model(input_id, attention_masks, token_ids, labels) # noqa
                 else:
@@ -109,7 +109,7 @@ def train_model(train_loader, dev_loader, test_loader, model_name,
 
         curtestloss, curtestacc, curtestf1 = evaluate(test_loader,
                                                       model, device,
-                                                     model_name)
+                                                      model_name)
 
         print("Run {} Test Accuracy {} F1 Score {}".format(run,
                                                            curtestacc,
