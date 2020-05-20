@@ -3,16 +3,15 @@ import random
 import argparse
 import numpy as np
 import torch
-from sklearn.model_selection import *
-from loader import *
-from Tokenizer import *
-from train import *
+from sklearn.model_selection import train_test_split
+from loader import load_semeval, load_twitter, get_loader
+from Tokenizer import tokenize_sentences, get_pretrained_tokenizer
+from train import train_model
 
-seed = 1345
-random.seed(seed)
-np.random.seed(seed)
-torch.manual_seed(seed)
-device = torch.device('cuda' if torch.cuda.is_available else 'cpu')
+SEED = 1345
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
 
 
 def main():
@@ -23,29 +22,53 @@ def main():
                         help='Maximum Sentence length for BERT')
     parser.add_argument('--numclasses', type=int, default=3,
                         help="to include conflict class for ABSA if yes: 4")
+    parser.add_argument('--model_name', type=str, default='lstm',
+                        help='model type')
     parser.add_argument('--data-path', type=str, default=None,
                         help='path to folder containing datasets')
     parser.add_argument('--batch-size', type=int, default=8, help='Batch Size')
-    parser.add_argument('--numepochs', type=int, default=50,
+    parser.add_argument('--numepochs', type=int, default=10,
                         help='Number of epochs to train')
     parser.add_argument('--runs', type=int, default=10,
                         help='Number of runs to report results')
 
     args = parser.parse_args()
-    (train_sentence, train_aspect, train_sentiment,
-     test_sentence, test_aspect, test_sentiment) = load_data(args.dataset,
-                                                             args.numclasses,
-                                                             args.data_path)
+    # Number of classes
+    numclasses = args.numclasses
+    # Dataset name
+    dataset = args.dataset
+    # Path to Dataset
+    datapath = args.data_path
+
+    DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    if(args.dataset not in ['laptop', 'restaurant', 'twitter']):
+        raise ValueError('Invalid dataset selected')
+    if(args.model_name not in ['lstm', 'attention', 'base']):
+        raise ValueError('Invalid model selected')
+
+    if(dataset == 'laptop' or dataset == 'restaurant'):
+        (train_sentence, train_aspect, train_sentiment,
+         test_sentence, test_aspect, test_sentiment) = load_semeval(dataset,
+                                                                    numclasses,
+                                                                    datapath)
+    else:
+        (train_sentence, train_aspect, train_sentiment,
+         test_sentence, test_aspect, test_sentiment) = load_twitter(dataset,
+                                                                    datapath)
+
     (train_sentence, dev_sentence, train_aspect, dev_aspect,
      train_sentiment, dev_sentiment) = train_test_split(train_sentence,
                                                         train_aspect,
                                                         train_sentiment,
                                                         test_size=0.1,
                                                         random_state=42)
+
     print("Training Data size: {}".format(len(train_sentence)))
     print("Validation Data size: {}".format(len(dev_sentence)))
     print("Test Data size: {}".format(len(test_sentence)))
     print("------------------------------------------------")
+    # Returns Pretrained BERT Tokenizer
     bert_tokenizer = get_pretrained_tokenizer()
 
     print("Tokenizing training data")
@@ -82,8 +105,8 @@ def main():
                              test_token_type_ids, test_labels,
                              args.batch_size)
 
-    train_model(train_loader, dev_loader, test_loader,
-                args.numclasses, args.numepochs, args.runs, device)
+    train_model(train_loader, dev_loader, test_loader, args.model_name,
+                numclasses, args.numepochs, args.runs, DEVICE)
 
 
 if __name__ == '__main__':

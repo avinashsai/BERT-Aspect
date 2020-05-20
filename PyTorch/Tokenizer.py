@@ -3,7 +3,10 @@ from transformers import BertTokenizer
 
 
 def get_pretrained_tokenizer():
+    """
+    Loads pretrained BERT Tokenizer and returns it,
 
+    """
     print("Downloading bert tokenizer to cache")
     print("---------------------------------------")
     bert_tokenizer = BertTokenizer.from_pretrained('bert-base-uncased',
@@ -13,7 +16,15 @@ def get_pretrained_tokenizer():
 
 
 def tokenize_sentences(bert_tokenizer, sentences, aspects, maxlen):
+    """ converts sentences into ids according to bert tokenizer
 
+    Arguments:
+    bert_tokenizer (Tokenizer): Pretrained BERT Tokenizer
+    sentences (list): List of sentences
+    aspects (list): List of Aspects
+    maxlen (int): Maximum Length of a sentence
+
+    """
     input_ids = []
     attention_masks = []
     token_type_ids = []
