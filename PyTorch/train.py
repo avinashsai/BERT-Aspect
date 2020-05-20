@@ -5,13 +5,14 @@ import torch.nn.functional as F
 from model import Bert_Base, Bert_Attention, Bert_LSTM
 
 
-def evaluate(loader, net, device):
+def evaluate(loader, net, device, model_name):
     """ Evaluates a model and returns loss, accuracy
 
     Arguments:
     loader (DataLoader): dataloader to evaluate
     net (nn.Module): Model to evaluate
     device (torch.device): Device type
+    model_name (str): Model name 
 
     """
     net.eval()
@@ -27,9 +28,12 @@ def evaluate(loader, net, device):
             attention_masks = attention_masks.to(device)
             token_ids = token_ids.to(device)
             labels = labels.long().to(device)
-
-            output = net(input_id, attention_masks, token_ids)
-            curloss = F.cross_entropy(output, labels, reduction='sum')
+            
+            if(model_name == 'base'):
+                curloss, output = net(input_id, attention_masks, token_ids, labels)# noqa
+            else:
+                output = net(input_id, attention_masks, token_ids)
+                curloss = F.cross_entropy(output, labels, reduction='sum')
             loss += curloss.item()
             preds = torch.argmax(output, 1)
             y_pred.extend(preds.tolist())
@@ -82,14 +86,17 @@ def train_model(train_loader, dev_loader, test_loader, model_name,
                 labels = labels.long().to(device)
 
                 model.zero_grad()
+                
+                if(model_name == 'base'):
+                    loss, _ = model(input_id, attention_masks, token_ids, labels) # noqa
+                else:
+                    output = model(input_id, attention_masks, token_ids)
+                    loss = F.cross_entropy(output, labels)
 
-                output = model(input_id, attention_masks, token_ids)
-
-                loss = F.cross_entropy(output, labels)
                 loss.backward()
                 optimizer.step()
 
-            valloss, valacc, _ = evaluate(dev_loader, model, device)
+            valloss, valacc, _ = evaluate(dev_loader, model, device, model_name) # noqa
             if(valacc > valbest):
                 valbest = valacc
                 best_model_wts = copy.deepcopy(model.state_dict())
@@ -101,7 +108,8 @@ def train_model(train_loader, dev_loader, test_loader, model_name,
         model.load_state_dict(best_model_wts)
 
         curtestloss, curtestacc, curtestf1 = evaluate(test_loader,
-                                                      model, device)
+                                                      model, device,
+                                                     model_name)
 
         print("Run {} Test Accuracy {} F1 Score {}".format(run,
                                                            curtestacc,

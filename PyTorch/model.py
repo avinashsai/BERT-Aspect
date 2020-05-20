@@ -19,17 +19,14 @@ class Bert_Base(nn.Module):
 
         self.bert = BertForSequenceClassification.from_pretrained('bert-base-uncased', # noqa
                                                                    output_hidden_states=False, # noqa
-                                                                   output_attentions=False) # noqa
+                                                                   output_attentions=False,
+                                                                   num_labels=self.numclasses) # noqa
         print("BERT Model Loaded")
-        self.fc = nn.Linear(self.embeddim, self.numclasses)
 
-    def forward(self, inp_ids, att_mask, token_ids):
+    def forward(self, inp_ids, att_mask, token_ids, labels):
         loss, out = self.bert(input_ids=inp_ids, attention_mask=att_mask,
-                              token_type_ids=token_ids)
-
-        out = self.dropout(out)
-        out = self.fc(out)
-        return out
+                              token_type_ids=token_ids, labels=labels)
+        return loss, out
 
 
 class Bert_LSTM(nn.Module):
