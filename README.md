@@ -16,10 +16,11 @@ cd PyTorch
 python main.py --dataset (laptop/ restaurant)
                --maxlen (Maximum Sentence length (default: 80))
                --numclasses (3 if "conflict" class is not included else 4 (default:3))
-               --data-path (path to datasets (default: '../../Data/))
+               --data-path (path to datasets (default: '../Data/))
                --batch-size (Batch Size (default: 8)
-               --numepochs (Number of training epochs (default: 50))
+               --numepochs (Number of training epochs (default: 10))
                --runs (Number of average runs to report results (default: 10))
+               --model_name (lstm /attention /base)
 ```
 # Note
 This code is un-official implementation of the paper. Hence, training details may not be exactly similar. Also, I have made couple of changes due to which results are superior than the reported paper results.
