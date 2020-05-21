@@ -31,18 +31,40 @@ For Laptop dataset:
 
 | Model | This Implementation Result (Acc) | Paper Result (Acc) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 76.03 | 75.31 |
+| BERT Base Uncased + Linear | 75.44 |74.66  |
+| BERT Base Uncased + LSTM   | 76    | 75.31  |
+| BERT Base Uncased + Attention | 75.91 |75.16|
 
 | Model | This Implementation Result (F1) | Paper Result (F1) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 70.9 | 69.37 |
+| BERT Base Uncased + Linear | 70 | 68.64 |
+| BERT Base Uncased + LSTM   |  70.6  |  69.37 |
+| BERT Base Uncased + Attention | 70.6 | 68.76 |
 
 For Restaurant dataset:
 
 | Model | This Implementation Result (Acc) | Paper Result (Acc) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 83.6 | 82.21 |
+| BERT Base Uncased + Linear | 82.91 | 81.92 |
+| BERT Base Uncased + LSTM   |   83.04 | 82.21  |
+| BERT Base Uncased + Attention | 83.29 | 82.38 |
 
 | Model | This Implementation Result (F1) | Paper Result (F1) | 
 |-------|----------------------------------|--------------------|
-| BERT Base Uncased + LSTM | 74.5 | 73.22 |
+| BERT Base Uncased + Linear | 73.2 | 71.97 |
+| BERT Base Uncased + LSTM   |  73.4  | 72.52  |
+| BERT Base Uncased + Attention | 73.6 | 73.22 |
+
+For Twitter dataset:
+
+| Model | This Implementation Result (Acc) | Paper Result (Acc) | 
+|-------|----------------------------------|--------------------|
+| BERT Base Uncased + Linear | 70.32 | 72.46 |
+| BERT Base Uncased + LSTM   |  70.66  | 73.06  |
+| BERT Base Uncased + Attention |69.06  | 73.35 |
+
+| Model | This Implementation Result (F1) | Paper Result (F1) | 
+|-------|----------------------------------|--------------------|
+| BERT Base Uncased + Linear | 68.5 | 71.04 |
+| BERT Base Uncased + LSTM   | 67.1   | 71.61  |
+| BERT Base Uncased + Attention |  69|71.88  |
