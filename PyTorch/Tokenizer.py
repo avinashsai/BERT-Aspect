@@ -36,7 +36,6 @@ def tokenize_sentences(bert_tokenizer, sentences, aspects, maxlen):
                                              add_special_tokens=True,
                                              max_length=maxlen,
                                              pad_to_max_length=True,
-                                             return_attention_masks=True,
                                              return_token_type_ids=True,
                                              return_tensors='pt')
 

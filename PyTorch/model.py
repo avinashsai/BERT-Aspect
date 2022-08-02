@@ -20,7 +20,8 @@ class Bert_Base(nn.Module):
         self.bert = BertForSequenceClassification.from_pretrained('bert-base-uncased', # noqa
                                                                    output_hidden_states=False, # noqa
                                                                    output_attentions=False, # noqa
-                                                                   num_labels=self.numclasses) # noqa
+                                                                   num_labels=self.numclasses,
+                                                                  return_dict=False) # noqa
         print("BERT Model Loaded")
 
     def forward(self, inp_ids, att_mask, token_ids, labels):
@@ -40,14 +41,14 @@ class Bert_LSTM(nn.Module):
 
         self.bert = BertModel.from_pretrained('bert-base-uncased',
                                               output_hidden_states=True,
-                                              output_attentions=False)
+                                              output_attentions=False,
+                                              return_dict=False)
         print("BERT Model Loaded")
         self.lstm = nn.LSTM(self.embeddim, self.hiddendim_lstm, batch_first=True) # noqa
         self.fc = nn.Linear(self.hiddendim_lstm, self.numclasses)
 
     def forward(self, inp_ids, att_mask, token_ids):
-        last_hidden_state, pooler_output, \
-                hidden_states = self.bert(input_ids=inp_ids,
+        last_hidden_state, pooler_output, hidden_states = self.bert(input_ids=inp_ids,
                                           attention_mask=att_mask,
                                           token_type_ids=token_ids)
 
@@ -71,7 +72,8 @@ class Bert_Attention(nn.Module):
 
         self.bert = BertModel.from_pretrained('bert-base-uncased',
                                               output_hidden_states=True,
-                                              output_attentions=False)
+                                              output_attentions=False,
+                                              return_dict=False)
         print("BERT Model Loaded")
 
         q_t = np.random.normal(loc=0.0, scale=0.1, size=(1, self.embeddim))

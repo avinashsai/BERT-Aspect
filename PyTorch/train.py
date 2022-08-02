@@ -120,3 +120,4 @@ def train_model(train_loader, dev_loader, test_loader, model_name,
 
     print("Average Test Accuracy: {} F1: {} ".format(avg_testacc/runs,
                                                      avg_testf1/runs))
+    return model
